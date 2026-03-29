@@ -39,6 +39,7 @@ dependencies:
   # Santé — assistant vocal & reconnaissance
   flutter_tts: ^4.2.0
   speech_to_text: ^7.0.0
+  geolocator: ^14.0.2
 
 dev_dependencies:
   flutter_test:

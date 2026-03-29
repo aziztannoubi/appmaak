@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'sos_medical_screen.dart';
+
 class HealthHumanScreen extends StatefulWidget {
   const HealthHumanScreen({super.key});
 
@@ -10,6 +12,7 @@ class HealthHumanScreen extends StatefulWidget {
 class _HealthHumanScreenState extends State<HealthHumanScreen> {
   bool _insulineOn = true;
   bool _glycemiaOn = false;
+  bool _hydrationOn = true;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +44,16 @@ class _HealthHumanScreenState extends State<HealthHumanScreen> {
                 ],
               ),
               const SizedBox(height: 8),
-              _SosMedicalCard(theme: theme),
+              _SosMedicalCard(
+                theme: theme,
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (_) => const SosMedicalScreen(),
+                    ),
+                  );
+                },
+              ),
               const SizedBox(height: 14),
               _SectionHeader(
                 title: 'Mes Rendez-vous',
@@ -78,6 +90,36 @@ class _HealthHumanScreenState extends State<HealthHumanScreen> {
                 value: _glycemiaOn,
                 onChanged: (value) => setState(() => _glycemiaOn = value),
               ),
+              const SizedBox(height: 10),
+              _ReminderTile(
+                color: const Color(0xFFEAF8EC),
+                iconColor: const Color(0xFF48B566),
+                icon: Icons.water_drop_outlined,
+                title: 'Hydratation',
+                subtitle: 'Toutes les 2 heures',
+                value: _hydrationOn,
+                onChanged: (value) => setState(() => _hydrationOn = value),
+              ),
+              const SizedBox(height: 14),
+              Row(
+                children: const [
+                  Expanded(
+                    child: _MiniHealthCard(
+                      title: "Pas aujourd'hui",
+                      value: '4 231',
+                      icon: Icons.directions_walk,
+                    ),
+                  ),
+                  SizedBox(width: 8),
+                  Expanded(
+                    child: _MiniHealthCard(
+                      title: 'Sommeil',
+                      value: '7h 20',
+                      icon: Icons.nights_stay_outlined,
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
@@ -87,61 +129,69 @@ class _HealthHumanScreenState extends State<HealthHumanScreen> {
 }
 
 class _SosMedicalCard extends StatelessWidget {
-  const _SosMedicalCard({required this.theme});
+  const _SosMedicalCard({
+    required this.theme,
+    required this.onTap,
+  });
 
   final ThemeData theme;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-      decoration: BoxDecoration(
-        color: const Color(0xFF0A8E81),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        children: [
-          Container(
-            height: 44,
-            width: 44,
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.9),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            alignment: Alignment.center,
-            child: Text(
-              'SOS',
-              style: theme.textTheme.labelLarge?.copyWith(
-                color: const Color(0xFF0A8E81),
-                fontWeight: FontWeight.w700,
+    return InkWell(
+      borderRadius: BorderRadius.circular(12),
+      onTap: onTap,
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+        decoration: BoxDecoration(
+          color: const Color(0xFF0A8E81),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Row(
+          children: [
+            Container(
+              height: 44,
+              width: 44,
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.9),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                'SOS',
+                style: theme.textTheme.labelLarge?.copyWith(
+                  color: const Color(0xFF0A8E81),
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'SOS Médical',
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'SOS Médical',
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  'Alerte immédiate & contact urgence',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: Colors.white.withOpacity(0.9),
+                  const SizedBox(height: 2),
+                  Text(
+                    'Alerte immédiate & contact urgence',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: Colors.white.withOpacity(0.9),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          const Icon(Icons.chevron_right, color: Colors.white),
-        ],
+            const Icon(Icons.chevron_right, color: Colors.white),
+          ],
+        ),
       ),
     );
   }
@@ -362,6 +412,54 @@ class _ReminderTile extends StatelessWidget {
             ),
           ),
           Switch(value: value, onChanged: onChanged),
+        ],
+      ),
+    );
+  }
+}
+
+class _MiniHealthCard extends StatelessWidget {
+  const _MiniHealthCard({
+    required this.title,
+    required this.value,
+    required this.icon,
+  });
+
+  final String title;
+  final String value;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: const Color(0xFF848484),
+            ),
+          ),
+          const SizedBox(height: 2),
+          Row(
+            children: [
+              Text(
+                value,
+                style: theme.textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(width: 6),
+              Icon(icon, size: 18, color: const Color(0xFF6D6D6D)),
+            ],
+          ),
         ],
       ),
     );
