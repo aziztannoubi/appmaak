@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../health/screens/health_human_screen.dart';
+import '../../health/screens/health_tab_screen.dart';
 import '../../places/screens/places_screen.dart';
 import '../../profile/screens/profile_screen.dart';
 import '../../transport/screens/transport_screen.dart';
@@ -20,7 +20,7 @@ class _MainShellState extends State<MainShell> {
 
   late final List<Widget> _pages = const [
     HomeScreen(),
-    HealthHumanScreen(),
+    HealthTabScreen(),
     TransportScreen(),
     PlacesScreen(),
     ProfileScreen(),
