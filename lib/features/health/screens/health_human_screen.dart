@@ -146,7 +146,7 @@ class _SosMedicalCard extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         decoration: BoxDecoration(
-          color: const Color(0xFF0A8E81),
+          color: const Color(0xFF1E78D7),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
@@ -162,7 +162,7 @@ class _SosMedicalCard extends StatelessWidget {
               child: Text(
                 'SOS',
                 style: theme.textTheme.labelLarge?.copyWith(
-                  color: const Color(0xFF0A8E81),
+                  color: const Color(0xFF1E78D7),
                   fontWeight: FontWeight.w700,
                 ),
               ),
